@@ -7,7 +7,6 @@ class GraphFx extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.data = {};
-    this.g = this.createPath();
   }
   
   attributeChangedCallback(attributeName, oldValue, newValue, namespace) {
@@ -16,7 +15,7 @@ class GraphFx extends HTMLElement {
   }
 
   fx(x) {
-    let fx = new Function('x', 'return ' + "x**2");
+    let fx = new Function('x', 'return ' + this.data["function"]);
     return fx(x);
   }
 
@@ -27,7 +26,7 @@ class GraphFx extends HTMLElement {
   }
 
   calcCoordinate(p) {
-    let range = Number(5);
+    let range = this.data["range"];
     let xd = 200 + 180 / range * p[0];
     let yd = 200 + -1 * 180 / range * p[1];
     let pd = [xd, yd];
@@ -94,8 +93,8 @@ class GraphFx extends HTMLElement {
   }
 
   createPath() {
-    let range = 5;
-    let accuracy = 0.1;
+    let range = this.data["range"];
+    let accuracy = this.data["accuracy"];
     let path = "<path ";
     let points = new Array();
     for(let i = 0; i < 2*range/accuracy + 1; i++) {
@@ -126,33 +125,37 @@ class GraphFx extends HTMLElement {
       }
     }
     path += "d=\"" + parameter + "\"></path>";
-    let g = "<g id=\"function\" fill=\"none\" stroke=\"black\">" + path + "</g>";
-    return g;
+    let symbol = "<symbol id=\"function\" fill=\"none\" stroke=\"black\" viewBox=\"0 0 400 400\">" + path + "</g>";
+    return symbol;
   }
 
   _render() {
-    this.shadowRoot.innerHTML = `
+    if(this.data["function"]) {
+      this.g = this.createPath();
+      this.shadowRoot.innerHTML = `
       <style>
-        .math-fonts {
-          //display: none;
-        }
-        .graph-area {
-          margin: 15px;
-        }
+      .math-fonts {
+        //display: none;
+      }
+      .graph-area {
+        margin: 15px;
+      }
       </style>
       <svg viewBox="0 0 400 400" width="600px" height="600px" class="graph-area">
-        <defs>
-          <marker id="arrow_head" markerUnits="strokeWidth" markerWidth="5" markerHeight="5" viewBox="0 0 13 10" refX="5" refY="5" orient="auto">
-            <polygon points="0,0 3,5 0,10 13,5 " fill="black"/>
-          </marker>
-        </defs>
-        <g stroke="black" fill="none" font-size="14" id="axes">
-          <line x1="200" y1="380" x2="200" y2="20" stroke-width="1" marker-end="url(#arrow_head)"/>
-          <line x1="20" y1="200" x2="380" y2="200" stroke-width="1" marker-end="url(#arrow_head)"/>
-        </g>
-        ${this.g}
+      <defs>
+      <marker id="arrow_head" markerUnits="strokeWidth" markerWidth="5" markerHeight="5" viewBox="0 0 13 10" refX="5" refY="5" orient="auto">
+      <polygon points="0,0 3,5 0,10 13,5 " fill="black"/>
+      </marker>
+      </defs>
+      <g stroke="black" fill="none" font-size="14" id="axes">
+      <line x1="200" y1="380" x2="200" y2="20" stroke-width="1" marker-end="url(#arrow_head)"/>
+      <line x1="20" y1="200" x2="380" y2="200" stroke-width="1" marker-end="url(#arrow_head)"/>
+      </g>
+      <use href="#function" width="360" height="360" x="20" y="20"></use>
+      ${this.g}
       </svg>
-    `;
+      `;
+    }
   }
 }
 
