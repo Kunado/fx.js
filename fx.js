@@ -1,6 +1,6 @@
 class GraphFx extends HTMLElement {
   static get observedAttributes() {
-    return [ "function", "range", "accuracy" ];
+    return [ "function", "range", "accuracy", "width", "height" ];
   }
   
   constructor() {
@@ -134,14 +134,11 @@ class GraphFx extends HTMLElement {
       this.g = this.createPath();
       this.shadowRoot.innerHTML = `
       <style>
-      .math-fonts {
-        //display: none;
-      }
       .graph-area {
         margin: 15px;
       }
       </style>
-      <svg viewBox="0 0 400 400" width="600px" height="600px" class="graph-area">
+      <svg viewBox="0 0 400 400" width="${this.data["width"]}" height="${this.data["height"]}" class="graph-area">
       <defs>
       <marker id="arrow_head" markerUnits="strokeWidth" markerWidth="5" markerHeight="5" viewBox="0 0 13 10" refX="5" refY="5" orient="auto">
       <polygon points="0,0 3,5 0,10 13,5 " fill="black"/>

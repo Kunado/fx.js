@@ -1,4 +1,20 @@
-fx(x) {
+class GraphFx extends HTMLElement {
+  static get observedAttributes() {
+    return [ "function", "range", "accuracy", "width", "height" ];
+  }
+  
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.data = {};
+  }
+  
+  attributeChangedCallback(attributeName, oldValue, newValue, namespace) {
+    this.data[attributeName] = newValue;
+    this._render();
+  }
+
+  fx(x) {
     let fx = new Function('x', 'return ' + this.data["function"]);
     return fx(x);
   }
@@ -10,9 +26,9 @@ fx(x) {
   }
 
   calcCoordinate(p) {
-    let range = Number(100);
-    let xd = Math.floor(200 + -1 * 180 / range * p[0]);
-    let yd = Math.floor(200 + 180 / range * p[1]);
+    let range = this.data["range"];
+    let xd = 200 + 180 / range * p[0];
+    let yd = 200 + -1 * 180 / range * p[1];
     let pd = [xd, yd];
     return pd;
   }
@@ -77,12 +93,9 @@ fx(x) {
   }
 
   createPath() {
-    let range = Number(100);
-    let accuracy = Number(5);
-    // let path = document.createElement("path");
+    let range = this.data["range"];
+    let accuracy = this.data["accuracy"];
     let path = "<path ";
-    // let g = document.createElement("g");
-    // g.setAttribute("id", "function");
     let points = new Array();
     for(let i = 0; i < 2*range/accuracy + 1; i++) {
       points[i] = this.calcPoint(-range + i * accuracy);
@@ -101,7 +114,7 @@ fx(x) {
         let p1 = points[i];
         let p2 = points[i-1];
         let p3 = points[i-2];
-        parameter += " M" + p0[0] + ", " + p0[1];
+        // parameter += " M" + p0[0] + ", " + p0[1];
         parameter += " " + this.quadraticBezierOption(p0, p1, p2, p3);
       } else {
         let p0 = points[i-1];
@@ -111,9 +124,36 @@ fx(x) {
         parameter += " " + this.cubicBezierOption(p0, p1, p2, p3);
       }
     }
-    // path.setAttribute("d", parameter);
     path += "d=\"" + parameter + "\"></path>";
-    let g = "<g id=\"function\">" + path + "</g>";
-    // g.appendChild(path);
-    return g;
+    let symbol = "<symbol id=\"function\" fill=\"none\" stroke=\"black\" viewBox=\"0 0 400 400\">" + path + "</g>";
+    return symbol;
   }
+
+  _render() {
+    if(this.data["function"]) {
+      this.g = this.createPath();
+      this.shadowRoot.innerHTML = `
+      <style>
+      .graph-area {
+        margin: 15px;
+      }
+      </style>
+      <svg viewBox="0 0 400 400" width="${this.data["width"]}" height="${this.data["height"]}" class="graph-area">
+      <defs>
+      <marker id="arrow_head" markerUnits="strokeWidth" markerWidth="5" markerHeight="5" viewBox="0 0 13 10" refX="5" refY="5" orient="auto">
+      <polygon points="0,0 3,5 0,10 13,5 " fill="black"/>
+      </marker>
+      </defs>
+      <g stroke="black" fill="none" font-size="14" id="axes">
+      <line x1="200" y1="380" x2="200" y2="20" stroke-width="1" marker-end="url(#arrow_head)"/>
+      <line x1="20" y1="200" x2="380" y2="200" stroke-width="1" marker-end="url(#arrow_head)"/>
+      </g>
+      <use href="#function" width="360" height="360" x="20" y="20"></use>
+      ${this.g}
+      </svg>
+      `;
+    }
+  }
+}
+
+customElements.define("graph-fx", GraphFx);

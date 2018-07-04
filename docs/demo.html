@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>f(x).js project</title>
+	<link rel="stylesheet" href="style.css"> 
+	<script src="fx.js"></script>
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<h1>f(x).js</h1>
+			<p>simple graph drawing for Web.</p>
+		</div>
+	</header>
+	<article>
+		<div class="container">
+			<section>
+				<h2>what is f(x).js?</h2>
+				<p>
+					f(x).js provides a simple way to draw a graph of a function on the Web.
+				</p>
+				<p>
+					<a href="https://www.mathjax.org">MathJax</a> is known as a way to display mathematical expressions on the web. This project aims to provide a tool like MathJax for graph drawing.
+				</p>
+			</section>
+			<section>
+				<h2>features</h2>
+				<ul>
+					<li>using web components</li>
+					<li>svg output</li>
+				</ul>
+			</section>
+			<section>
+				<h2>usage</h2>
+				<ol>
+					<li>
+						Load f(x).js.
+					</li>
+					<li>
+						Put HTML tag &lt;graph-fx&gt;&lt;/graph-fx&gt; where you want to display the graph.
+					</li>
+					<li>
+						Set graph options through &lt;graph-fx&gt; tag's attribute.<br>
+						Like this:<br>
+						<div class="display_code">
+							&lt;<span class="tag_name">graph-fx</span><br>
+							<span class="attribute_name">function</span>=<span class="attribute_value">"x**2"</span><br>
+							<span class="attribute_name">range</span>=<span class="attribute_value">5</span><br>
+							<span class="attribute_name">accuracy</span>=<span class="attribute_value">.01</span><br>
+							<span class="attribute_name">width</span>=<span class="attribute_value">"180px"</span><br>
+							<span class="attribute_name">height</span>=<span class="attribute_value">"180px"</span><br>
+							&gt;&lt;<span class="tag_name">/graph-fx</span>&gt;
+						</div>
+					</li>
+				</ol>
+			</section>
+			<section class="examples">
+				<h2>examples</h2>
+				<figure>
+					<graph-fx
+					function="x**2"
+					range=5
+					accuracy=.01
+					width="140px"
+					height="140px"
+					></graph-fx>
+					<figcaption>
+						graph of \(f(x) = x^2\).
+					</figcaption>
+				</figure>
+				<figure>
+					<graph-fx
+					function="x**3"
+					range=5
+					accuracy=.01
+					width="140px"
+					height="140px"
+					></graph-fx>
+					<figcaption>
+						graph of \(f(x) = x^3\).
+					</figcaption>
+				</figure>
+				<figure>
+					<graph-fx
+					function="Math.sin(x)"
+					range=5
+					accuracy=.01
+					width="140px"
+					height="140px"
+					></graph-fx>
+					<figcaption>
+						graph of \(f(x) = \sin x\).
+					</figcaption>
+				</figure>
+				<figure>
+					<graph-fx
+					function="Math.E**x"
+					range=5
+					accuracy=.01
+					width="140px"
+					height="140px"
+					></graph-fx>
+					<figcaption>
+						graph of \(f(x) = e^x\).
+					</figcaption>
+				</figure>
+			</section>
+			<section>
+				<h2>live demo</h2>
+				<div class="live_demo">
+					<graph-fx
+					function="Math.E**x"
+					range=5
+					accuracy=.01
+					width="300px"
+					height="300px"
+					></graph-fx>
+					<p>define a function.</p>
+					<input class="function_def" placeholder="Math.E**x" type="text"/>
+				</div>
+			</section>
+		</div>
+	</article>
+	<footer>
+		<div class="container">
+			this project is maintained <a href="https://github.com/kunado/fx.js">here</a>.
+		</div>
+	</footer>
+</body>
+</html>
