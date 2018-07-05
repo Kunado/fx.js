@@ -4,9 +4,8 @@
 	<meta charset="UTF-8">
 	<title>f(x).js project</title>
 	<link rel="stylesheet" href="style.css"> 
-	<script src="fx.js"></script>
-	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
+	<script type="text/javascript" src="fx.js"></script>
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 <body>
 	<header>
@@ -117,9 +116,10 @@
 					accuracy=.01
 					width="300px"
 					height="300px"
+					class="demo_fx"
 					></graph-fx>
 					<p>define a function.</p>
-					<input class="function_def" placeholder="Math.E**x" type="text"/>
+					<input class="function_def" value="Math.E**x" type="text">
 				</div>
 			</section>
 		</div>
@@ -129,5 +129,6 @@
 			this project is maintained <a href="https://github.com/kunado/fx.js">here</a>.
 		</div>
 	</footer>
+	<script type="text/javascript" src="change_function.js"></script>
 </body>
 </html>
