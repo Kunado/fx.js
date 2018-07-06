@@ -100,6 +100,7 @@ class GraphFx extends HTMLElement {
     for(let i = 0; i < 2*range/accuracy + 1; i++) {
       points[i] = this.calcPoint(-range + i * accuracy);
     }
+    console.log(points);
     let startPoint = this.calcCoordinate(points[0]);
     let parameter = "M " + startPoint[0] + " " + startPoint[1];
     for(let i = 0; i < points.length -1; i++) {
