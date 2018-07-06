@@ -27,6 +27,8 @@ class GraphFx extends HTMLElement {
 
   calcCoordinate(p) {
     let range = this.data["range"];
+    let svg_size = 200;
+    let margined_size = 180;
     let xd = 200 + 180 / range * p[0];
     let yd = 200 + -1 * 180 / range * p[1];
     let pd = [xd, yd];
@@ -65,6 +67,9 @@ class GraphFx extends HTMLElement {
     let p3p1_length = this.calcLength(p3p1);
     let p1p2_length = this.calcLength(p1p2);
     let cos = this.calcInnerProduct(p0p2, p3p1)/(p0p2_length * p3p1_length);
+    if(cos < -1) {
+      cos = -1;
+    }
     let c = ((4 * p1p2_length) / (3 * (p0p2_length + p3p1_length))) * (1 / (1 + Math.sqrt((1 + cos)/2)));
     let q = this.calcVectorsSum(p0, this.calcVectorConstantMult(p0p2, c));
     let r = this.calcVectorsSum(p2, this.calcVectorConstantMult(p3p1, c));
@@ -100,7 +105,6 @@ class GraphFx extends HTMLElement {
     for(let i = 0; i < 2*range/accuracy + 1; i++) {
       points[i] = this.calcPoint(-range + i * accuracy);
     }
-    console.log(points);
     let startPoint = this.calcCoordinate(points[0]);
     let parameter = "M " + startPoint[0] + " " + startPoint[1];
     for(let i = 0; i < points.length -1; i++) {
